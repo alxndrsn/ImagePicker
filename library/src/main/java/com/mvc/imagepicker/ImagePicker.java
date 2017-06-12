@@ -68,8 +68,19 @@ public final class ImagePicker {
      * @param activity which will launch the dialog.
      */
     public static void pickImage(Activity activity) {
+        pickImage(PICK_IMAGE_REQUEST_CODE, activity);
+    }
+
+    /**
+     * Launch a dialog to pick an image from camera/gallery apps.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param activity             which will launch the dialog.
+     */
+    public static void pickImage(int pickImageRequestCode, Activity activity) {
         String chooserTitle = activity.getString(R.string.pick_image_intent_text);
-        pickImage(activity, chooserTitle);
+        pickImage(pickImageRequestCode, activity, chooserTitle);
     }
 
     /**
@@ -79,8 +90,20 @@ public final class ImagePicker {
      *                 onActivityResult()
      */
     public static void pickImage(Fragment fragment) {
+        pickImage(PICK_IMAGE_REQUEST_CODE, fragment);
+    }
+
+    /**
+     * Launch a dialog to pick an image from camera/gallery apps.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param fragment             which will launch the dialog and will get the
+     *                             result in onActivityResult()
+     */
+    public static void pickImage(int pickImageRequestCode, Fragment fragment) {
         String chooserTitle = fragment.getString(R.string.pick_image_intent_text);
-        pickImage(fragment, chooserTitle);
+        pickImage(pickImageRequestCode, fragment, chooserTitle);
     }
 
     /**
@@ -90,8 +113,20 @@ public final class ImagePicker {
      * @param chooserTitle will appear on the picker dialog.
      */
     public static void pickImage(Activity activity, String chooserTitle) {
+        pickImage(PICK_IMAGE_REQUEST_CODE, activity, chooserTitle);
+    }
+
+    /**
+     * Launch a dialog to pick an image from camera/gallery apps.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param activity             which will launch the dialog.
+     * @param chooserTitle         will appear on the picker dialog.
+     */
+    public static void pickImage(int pickImageRequestCode, Activity activity, String chooserTitle) {
         Intent chooseImageIntent = getPickImageIntent(activity, chooserTitle);
-        activity.startActivityForResult(chooseImageIntent, PICK_IMAGE_REQUEST_CODE);
+        activity.startActivityForResult(chooseImageIntent, pickImageRequestCode);
     }
 
     /**
@@ -102,6 +137,19 @@ public final class ImagePicker {
      * @param chooserTitle will appear on the picker dialog.
      */
     public static void pickImage(Fragment fragment, String chooserTitle) {
+        pickImage(PICK_IMAGE_REQUEST_CODE, fragment, chooserTitle);
+    }
+
+    /**
+     * Launch a dialog to pick an image from camera/gallery apps.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param fragment             which will launch the dialog and will get the
+     *                             result in onActivityResult()
+     * @param chooserTitle will appear on the picker dialog.
+     */
+    public static void pickImage(int pickImageRequestCode, Fragment fragment, String chooserTitle) {
         Intent chooseImageIntent = getPickImageIntent(fragment.getContext(), chooserTitle);
         fragment.startActivityForResult(chooseImageIntent, PICK_IMAGE_REQUEST_CODE);
     }
@@ -204,9 +252,26 @@ public final class ImagePicker {
      */
     public static Bitmap getImageFromResult(Context context, int requestCode, int resultCode,
                                             Intent imageReturnedIntent) {
+        return getImageFromResult(PICK_IMAGE_REQUEST_CODE, context, requestCode, resultCode, imageReturnedIntent);
+    }
+
+    /**
+     * Called after launching the picker with the same values of Activity.getImageFromResult
+     * in order to resolve the result and get the image.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param context              context.
+     * @param requestCode          used to identify the pick image action.
+     * @param resultCode           -1 means the result is OK.
+     * @param imageReturnedIntent  returned intent where is the image data.
+     * @return image.
+     */
+    public static Bitmap getImageFromResult(int pickImageRequestCode, Context context, int requestCode,
+                                            int resultCode, Intent imageReturnedIntent) {
         Log.i(TAG, "getImageFromResult() called with: " + "resultCode = [" + resultCode + "]");
         Bitmap bm = null;
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == pickImageRequestCode) {
             File imageFile = getTemporalFile(context);
             Uri selectedImage;
             boolean isCamera = (imageReturnedIntent == null
@@ -238,8 +303,25 @@ public final class ImagePicker {
      */
     public static InputStream getInputStreamFromResult(Context context, int requestCode, int resultCode,
                                                        Intent imageReturnedIntent) {
+        return getInputStreamFromResult(PICK_IMAGE_REQUEST_CODE, context, requestCode, resultCode, imageReturnedIntent);
+    }
+
+    /**
+     * Called after launching the picker with the same values of Activity.getImageFromResult
+     * in order to resolve the result and get the input stream for the image.
+     *
+     * @param pickImageRequestCode the requestCode to use when calling
+     *                             startActivityForResult().
+     * @param context              context.
+     * @param requestCode          used to identify the pick image action.
+     * @param resultCode           -1 means the result is OK.
+     * @param imageReturnedIntent  returned intent where is the image data.
+     * @return stream.
+     */
+    public static InputStream getInputStreamFromResult(int pickImageRequestCode, Context context, int requestCode,
+                                                       int resultCode, Intent imageReturnedIntent) {
         Log.i(TAG, "getFileFromResult() called with: " + "resultCode = [" + resultCode + "]");
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == pickImageRequestCode) {
             File imageFile = getTemporalFile(context);
             Uri selectedImage;
             boolean isCamera = (imageReturnedIntent == null
