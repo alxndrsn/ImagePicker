@@ -128,8 +128,6 @@ public final class ImagePicker {
         // See https://developer.android.com/reference/android/provider/MediaStore.html#ACTION_IMAGE_CAPTURE
         if (!appManifestContainsPermission(context, Manifest.permission.CAMERA) || hasCameraAccess(context)) {
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePhotoIntent.putExtra("return-data", true);
-            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTemporalFile(context)));
             intentList = addIntentsToList(context, intentList, takePhotoIntent);
         }
 
